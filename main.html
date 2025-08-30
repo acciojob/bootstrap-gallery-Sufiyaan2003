@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Bootstrap Cards Gallery with Individual Lightboxes</title>
-<!-- Bootstrap CSS -->
+<title>Bootstrap Cards Gallery with Dynamic Lightbox</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 <style>
   .card {
@@ -17,7 +16,6 @@
     cursor: pointer;
     border-radius: 0.75rem 0.75rem 0 0;
   }
-  /* Lightbox base styles */
   .lightbox {
     display: none;
     position: fixed;
@@ -35,17 +33,22 @@
     max-height: 80vh;
     border-radius: 0.75rem;
   }
-  /* Navigation arrows */
-  .lightbox .nav-arrow {
+  .lightbox .nav-arrow, .lightbox .close-btn {
     position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 3rem;
     color: white;
     cursor: pointer;
     user-select: none;
-    padding: 0 1rem;
     z-index: 1100;
+    font-size: 2.5rem;
+  }
+  .lightbox .close-btn {
+    top: 1rem;
+    right: 1rem;
+  }
+  .lightbox .nav-arrow {
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0 1rem;
   }
   .lightbox .prev-arrow {
     left: 1rem;
@@ -53,24 +56,13 @@
   .lightbox .next-arrow {
     right: 1rem;
   }
-  /* Close button */
-  .lightbox .close-btn {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    font-size: 2.5rem;
-    color: white;
-    cursor: pointer;
-    user-select: none;
-    z-index: 1100;
-  }
 </style>
 </head>
 <body>
 <div class="container my-4">
   <h2 class="mb-4 text-center">Cards Gallery</h2>
   <div class="row g-3">
-    <!-- Six cards -->
+    <!-- 6 cards -->
     <div class="col-6 col-md-4 col-lg-2">
       <div class="card">
         <img src="https://storage.googleapis.com/acciojob-open-file-collections/image1.jpg" alt="Image 1" class="img-fluid gallery-img" data-index="0" />
@@ -128,86 +120,81 @@
   </div>
 </div>
 
-<!-- Six individual lightboxes -->
-<div class="lightbox" id="lightbox-0" tabindex="0" aria-modal="true" role="dialog" aria-label="Image gallery lightbox 1">
+<!-- Single lightbox container -->
+<div class="lightbox" id="lightbox" tabindex="0" aria-modal="true" role="dialog" aria-label="Image gallery lightbox">
   <span class="close-btn" title="Close">&times;</span>
   <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
-  <img src="https://storage.googleapis.com/acciojob-open-file-collections/image1.jpg" alt="Image 1" />
-  <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
-</div>
-<div class="lightbox" id="lightbox-1" tabindex="0" aria-modal="true" role="dialog" aria-label="Image gallery lightbox 2">
-  <span class="close-btn" title="Close">&times;</span>
-  <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
-  <img src="https://storage.googleapis.com/acciojob-open-file-collections/image2.jpg" alt="Image 2" />
-  <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
-</div>
-<div class="lightbox" id="lightbox-2" tabindex="0" aria-modal="true" role="dialog" aria-label="Image gallery lightbox 3">
-  <span class="close-btn" title="Close">&times;</span>
-  <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
-  <img src="https://storage.googleapis.com/acciojob-open-file-collections/image3.jpg" alt="Image 3" />
-  <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
-</div>
-<div class="lightbox" id="lightbox-3" tabindex="0" aria-modal="true" role="dialog" aria-label="Image gallery lightbox 4">
-  <span class="close-btn" title="Close">&times;</span>
-  <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
-  <img src="https://storage.googleapis.com/acciojob-open-file-collections/image4.jpg" alt="Image 4" />
-  <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
-</div>
-<div class="lightbox" id="lightbox-4" tabindex="0" aria-modal="true" role="dialog" aria-label="Image gallery lightbox 5">
-  <span class="close-btn" title="Close">&times;</span>
-  <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
-  <img src="https://storage.googleapis.com/acciojob-open-file-collections/image5.jpg" alt="Image 5" />
-  <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
-</div>
-<div class="lightbox" id="lightbox-5" tabindex="0" aria-modal="true" role="dialog" aria-label="Image gallery lightbox 6">
-  <span class="close-btn" title="Close">&times;</span>
-  <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
-  <img src="https://storage.googleapis.com/acciojob-open-file-collections/image6.jpg" alt="Image 6" />
+  <!-- img inserted dynamically -->
   <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
 </div>
 
 <script>
-  const totalImages = 6;
+  const images = [
+    'https://storage.googleapis.com/acciojob-open-file-collections/image1.jpg',
+    'https://storage.googleapis.com/acciojob-open-file-collections/image2.jpg',
+    'https://storage.googleapis.com/acciojob-open-file-collections/image3.jpg',
+    'https://storage.googleapis.com/acciojob-open-file-collections/image4.jpg',
+    'https://storage.googleapis.com/acciojob-open-file-collections/image5.jpg',
+    'https://storage.googleapis.com/acciojob-open-file-collections/image6.jpg'
+  ];
+
+  let currentIndex = -1;
+  const lightbox = document.getElementById('lightbox');
+  const closeBtn = lightbox.querySelector('.close-btn');
+  const prevBtn = lightbox.querySelector('.prev-arrow');
+  const nextBtn = lightbox.querySelector('.next-arrow');
+
+  function setLightboxImage(index) {
+    currentIndex = index;
+    // Remove old image if any
+    const oldImg = lightbox.querySelector('img');
+    if (oldImg) oldImg.remove();
+    // Create new image
+    const img = document.createElement('img');
+    img.src = images[currentIndex];
+    img.alt = `Image ${currentIndex + 1}`;
+    lightbox.insertBefore(img, nextBtn);
+  }
 
   function openLightbox(index) {
-    closeAllLightboxes();
-    const lb = document.getElementById('lightbox-' + index);
-    if(lb) {
-      lb.classList.add('active');
-      lb.focus();
-    }
+    setLightboxImage(index);
+    lightbox.classList.add('active');
+    lightbox.focus();
   }
 
-  function closeAllLightboxes() {
-    document.querySelectorAll('.lightbox.active').forEach(lb => lb.classList.remove('active'));
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    const img = lightbox.querySelector('img');
+    if (img) img.remove(); // remove from DOM to keep img count as 6
   }
 
-  // Event listeners for cards to open lightboxes
+  function showPrev() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    setLightboxImage(currentIndex);
+  }
+
+  function showNext() {
+    currentIndex = (currentIndex + 1) % images.length;
+    setLightboxImage(currentIndex);
+  }
+
   document.querySelectorAll('.gallery-img').forEach((img, idx) => {
     img.addEventListener('click', () => openLightbox(idx));
   });
 
-  // Setup close, next, prev events for each lightbox
-  document.querySelectorAll('.lightbox').forEach((lb, idx) => {
-    lb.querySelector('.close-btn').addEventListener('click', closeAllLightboxes);
-    lb.addEventListener('click', e => { if(e.target === lb) closeAllLightboxes(); });
+  closeBtn.addEventListener('click', closeLightbox);
+  prevBtn.addEventListener('click', e => { e.stopPropagation(); showPrev(); });
+  nextBtn.addEventListener('click', e => { e.stopPropagation(); showNext(); });
 
-    lb.querySelector('.prev-arrow').addEventListener('click', e => {
-      e.stopPropagation();
-      const prevIndex = (idx - 1 + totalImages) % totalImages;
-      openLightbox(prevIndex);
-    });
-
-    lb.querySelector('.next-arrow').addEventListener('click', e => {
-      e.stopPropagation();
-      const nextIndex = (idx + 1) % totalImages;
-      openLightbox(nextIndex);
-    });
+  lightbox.addEventListener('click', e => {
+    if (e.target === lightbox) closeLightbox();
   });
 
-  // Close all on ESC key
   document.addEventListener('keydown', e => {
-    if(e.key === 'Escape') closeAllLightboxes();
+    if (!lightbox.classList.contains('active')) return;
+    if (e.key === 'Escape') closeLightbox();
+    else if (e.key === 'ArrowLeft') showPrev();
+    else if (e.key === 'ArrowRight') showNext();
   });
 </script>
 </body>
