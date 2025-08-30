@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Bootstrap Cards Gallery with Carousel Lightbox</title>
+<title>Bootstrap Cards Gallery with Lightbox</title>
 <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 <style>
@@ -15,17 +15,52 @@
   }
   .gallery-img {
     cursor: pointer;
+    border-radius: 0.75rem 0.75rem 0 0;
   }
-  /* Modal transparent background */
-  .modal-content {
-    background: transparent;
-    border: none;
+  /* Lightbox base styles - hidden by default */
+  .lightbox {
+    display: none;
+    position: fixed;
+    z-index: 1050;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    align-items: center;
+    justify-content: center;
   }
-  .carousel-inner img {
+  .lightbox.active {
+    display: flex;
+  }
+  .lightbox img {
+    max-width: 90%;
+    max-height: 80vh;
     border-radius: 0.75rem;
-    max-height: 70vh;
-    object-fit: contain;
-    width: 100%;
+  }
+  /* Navigation arrows */
+  .lightbox .nav-arrow {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3rem;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    padding: 0 1rem;
+  }
+  .lightbox .prev-arrow {
+    left: 1rem;
+  }
+  .lightbox .next-arrow {
+    right: 1rem;
+  }
+  /* Close button */
+  .lightbox .close-btn {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    font-size: 2.5rem;
+    color: white;
+    cursor: pointer;
+    user-select: none;
   }
 </style>
 </head>
@@ -33,10 +68,10 @@
 <div class="container my-4">
   <h2 class="mb-4 text-center">Cards Gallery</h2>
   <div class="row g-3">
-    <!-- 6 Cards with images, h6 and p -->
+    <!-- Six cards -->
     <div class="col-6 col-md-4 col-lg-2">
       <div class="card">
-        <img src="https://storage.googleapis.com/acciojob-open-file-collections/image1.jpg" alt="Image 1" class="img-fluid rounded-top gallery-img" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-index="0" />
+        <img src="https://storage.googleapis.com/acciojob-open-file-collections/image1.jpg" alt="Image 1" class="img-fluid gallery-img" data-index="0" />
         <div class="card-body">
           <h6 class="card-title">Description 1</h6>
           <p class="card-text">Details about image 1.</p>
@@ -45,7 +80,7 @@
     </div>
     <div class="col-6 col-md-4 col-lg-2">
       <div class="card">
-        <img src="https://storage.googleapis.com/acciojob-open-file-collections/image2.jpg" alt="Image 2" class="img-fluid rounded-top gallery-img" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-index="1" />
+        <img src="https://storage.googleapis.com/acciojob-open-file-collections/image2.jpg" alt="Image 2" class="img-fluid gallery-img" data-index="1" />
         <div class="card-body">
           <h6 class="card-title">Description 2</h6>
           <p class="card-text">Details about image 2.</p>
@@ -54,7 +89,7 @@
     </div>
     <div class="col-6 col-md-4 col-lg-2">
       <div class="card">
-        <img src="https://storage.googleapis.com/acciojob-open-file-collections/image3.jpg" alt="Image 3" class="img-fluid rounded-top gallery-img" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-index="2" />
+        <img src="https://storage.googleapis.com/acciojob-open-file-collections/image3.jpg" alt="Image 3" class="img-fluid gallery-img" data-index="2" />
         <div class="card-body">
           <h6 class="card-title">Description 3</h6>
           <p class="card-text">Details about image 3.</p>
@@ -63,7 +98,7 @@
     </div>
     <div class="col-6 col-md-4 col-lg-2">
       <div class="card">
-        <img src="https://storage.googleapis.com/acciojob-open-file-collections/image4.jpg" alt="Image 4" class="img-fluid rounded-top gallery-img" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-index="3" />
+        <img src="https://storage.googleapis.com/acciojob-open-file-collections/image4.jpg" alt="Image 4" class="img-fluid gallery-img" data-index="3" />
         <div class="card-body">
           <h6 class="card-title">Description 4</h6>
           <p class="card-text">Details about image 4.</p>
@@ -72,7 +107,7 @@
     </div>
     <div class="col-6 col-md-4 col-lg-2">
       <div class="card">
-        <img src="https://storage.googleapis.com/acciojob-open-file-collections/image5.jpg" alt="Image 5" class="img-fluid rounded-top gallery-img" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-index="4" />
+        <img src="https://storage.googleapis.com/acciojob-open-file-collections/image5.jpg" alt="Image 5" class="img-fluid gallery-img" data-index="4" />
         <div class="card-body">
           <h6 class="card-title">Description 5</h6>
           <p class="card-text">Details about image 5.</p>
@@ -81,7 +116,7 @@
     </div>
     <div class="col-6 col-md-4 col-lg-2">
       <div class="card">
-        <img src="https://storage.googleapis.com/acciojob-open-file-collections/image6.jpg" alt="Image 6" class="img-fluid rounded-top gallery-img" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-index="5" />
+        <img src="https://storage.googleapis.com/acciojob-open-file-collections/image6.jpg" alt="Image 6" class="img-fluid gallery-img" data-index="5" />
         <div class="card-body">
           <h6 class="card-title">Description 6</h6>
           <p class="card-text">Details about image 6.</p>
@@ -91,57 +126,99 @@
   </div>
 </div>
 
-<!-- Modal with class "lightbox" contains Carousel -->
-<div class="modal fade lightbox" id="imageModal" tabindex="-1" aria-hidden="true" aria-labelledby="imageModalLabel">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-body p-0">
-        <div id="galleryCarousel" class="carousel slide" data-bs-interval="false">
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img src="https://storage.googleapis.com/acciojob-open-file-collections/image1.jpg" alt="Image 1" />
-            </div>
-            <div class="carousel-item">
-              <img src="https://storage.googleapis.com/acciojob-open-file-collections/image2.jpg" alt="Image 2" />
-            </div>
-            <div class="carousel-item">
-              <img src="https://storage.googleapis.com/acciojob-open-file-collections/image3.jpg" alt="Image 3" />
-            </div>
-            <div class="carousel-item">
-              <img src="https://storage.googleapis.com/acciojob-open-file-collections/image4.jpg" alt="Image 4" />
-            </div>
-            <div class="carousel-item">
-              <img src="https://storage.googleapis.com/acciojob-open-file-collections/image5.jpg" alt="Image 5" />
-            </div>
-            <div class="carousel-item">
-              <img src="https://storage.googleapis.com/acciojob-open-file-collections/image6.jpg" alt="Image 6" />
-            </div>
-          </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel" data-bs-slide="prev" aria-label="Previous">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next" aria-label="Next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+<!-- Six lightbox containers, one per image -->
+<div class="lightbox" id="lightbox-0">
+  <span class="close-btn" title="Close">&times;</span>
+  <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
+  <img src="https://storage.googleapis.com/acciojob-open-file-collections/image1.jpg" alt="Image 1" />
+  <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
+</div>
+<div class="lightbox" id="lightbox-1">
+  <span class="close-btn" title="Close">&times;</span>
+  <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
+  <img src="https://storage.googleapis.com/acciojob-open-file-collections/image2.jpg" alt="Image 2" />
+  <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
+</div>
+<div class="lightbox" id="lightbox-2">
+  <span class="close-btn" title="Close">&times;</span>
+  <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
+  <img src="https://storage.googleapis.com/acciojob-open-file-collections/image3.jpg" alt="Image 3" />
+  <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
+</div>
+<div class="lightbox" id="lightbox-3">
+  <span class="close-btn" title="Close">&times;</span>
+  <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
+  <img src="https://storage.googleapis.com/acciojob-open-file-collections/image4.jpg" alt="Image 4" />
+  <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
+</div>
+<div class="lightbox" id="lightbox-4">
+  <span class="close-btn" title="Close">&times;</span>
+  <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
+  <img src="https://storage.googleapis.com/acciojob-open-file-collections/image5.jpg" alt="Image 5" />
+  <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
+</div>
+<div class="lightbox" id="lightbox-5">
+  <span class="close-btn" title="Close">&times;</span>
+  <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
+  <img src="https://storage.googleapis.com/acciojob-open-file-collections/image6.jpg" alt="Image 6" />
+  <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
 </div>
 
 <!-- Bootstrap Bundle JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // Sync carousel index on thumbnail click
-  document.querySelectorAll('.gallery-img').forEach((img, idx) => {
+  const totalImages = 6;
+
+  // Show the clicked image's lightbox
+  document.querySelectorAll('.gallery-img').forEach(img => {
     img.addEventListener('click', () => {
-      const carouselElement = document.querySelector('#galleryCarousel');
-      let carousel = bootstrap.Carousel.getInstance(carouselElement);
-      if (!carousel) {
-        carousel = new bootstrap.Carousel(carouselElement, { interval: false });
-      }
-      carousel.to(idx);
+      const idx = parseInt(img.getAttribute('data-index'), 10);
+      openLightbox(idx);
     });
+  });
+
+  // Open lightbox by index
+  function openLightbox(index) {
+    closeAllLightboxes();
+    const lb = document.getElementById('lightbox-' + index);
+    if(lb) {
+      lb.classList.add('active');
+      lb.focus();
+    }
+  }
+
+  // Close all lightboxes
+  function closeAllLightboxes() {
+    document.querySelectorAll('.lightbox.active').forEach(lb => lb.classList.remove('active'));
+  }
+
+  // Close on clicking close button or background
+  document.querySelectorAll('.lightbox').forEach(lb => {
+    lb.querySelector('.close-btn').addEventListener('click', closeAllLightboxes);
+    lb.addEventListener('click', (e) => {
+      if(e.target === lb) closeAllLightboxes();
+    });
+  });
+
+  // Navigate lightbox prev/next
+  document.querySelectorAll('.lightbox').forEach((lb, idx) => {
+    lb.querySelector('.prev-arrow').addEventListener('click', (e) => {
+      e.stopPropagation();
+      const prevIndex = (idx - 1 + totalImages) % totalImages;
+      openLightbox(prevIndex);
+    });
+    lb.querySelector('.next-arrow').addEventListener('click', (e) => {
+      e.stopPropagation();
+      const nextIndex = (idx + 1) % totalImages;
+      openLightbox(nextIndex);
+    });
+  });
+
+  // Close lightbox on ESC key
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') {
+      closeAllLightboxes();
+    }
   });
 </script>
 </body>
