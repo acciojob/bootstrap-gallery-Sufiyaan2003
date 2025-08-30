@@ -122,58 +122,78 @@
   </div>
 </div>
 
-<!-- 6 lightboxes, one per card -->
-<div class="lightbox" id="lightbox-0" tabindex="0" aria-modal="true" role="dialog" aria-label="Lightbox image 1">
-  <span class="close-btn" title="Close">&times;</span>
-  <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
-  <img src="https://storage.googleapis.com/acciojob-open-file-collections/image1.jpg" alt="Image 1" />
-  <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
-</div>
-<div class="lightbox" id="lightbox-1" tabindex="0" aria-modal="true" role="dialog" aria-label="Lightbox image 2">
-  <span class="close-btn" title="Close">&times;</span>
-  <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
-  <img src="https://storage.googleapis.com/acciojob-open-file-collections/image2.jpg" alt="Image 2" />
-  <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
-</div>
-<div class="lightbox" id="lightbox-2" tabindex="0" aria-modal="true" role="dialog" aria-label="Lightbox image 3">
-  <span class="close-btn" title="Close">&times;</span>
-  <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
-  <img src="https://storage.googleapis.com/acciojob-open-file-collections/image3.jpg" alt="Image 3" />
-  <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
-</div>
-<div class="lightbox" id="lightbox-3" tabindex="0" aria-modal="true" role="dialog" aria-label="Lightbox image 4">
-  <span class="close-btn" title="Close">&times;</span>
-  <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
-  <img src="https://storage.googleapis.com/acciojob-open-file-collections/image4.jpg" alt="Image 4" />
-  <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
-</div>
-<div class="lightbox" id="lightbox-4" tabindex="0" aria-modal="true" role="dialog" aria-label="Lightbox image 5">
-  <span class="close-btn" title="Close">&times;</span>
-  <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
-  <img src="https://storage.googleapis.com/acciojob-open-file-collections/image5.jpg" alt="Image 5" />
-  <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
-</div>
-<div class="lightbox" id="lightbox-5" tabindex="0" aria-modal="true" role="dialog" aria-label="Lightbox image 6">
-  <span class="close-btn" title="Close">&times;</span>
-  <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
-  <img src="https://storage.googleapis.com/acciojob-open-file-collections/image6.jpg" alt="Image 6" />
-  <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
+<!-- 6 lightboxes without images initially -->
+<div id="lightbox-container">
+  <div class="lightbox" id="lightbox-0" tabindex="0" aria-modal="true" role="dialog" aria-label="Lightbox 1">
+    <span class="close-btn" title="Close">&times;</span>
+    <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
+    <!-- image inserted dynamically -->
+    <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
+  </div>
+  <div class="lightbox" id="lightbox-1" tabindex="0" aria-modal="true" role="dialog" aria-label="Lightbox 2">
+    <span class="close-btn" title="Close">&times;</span>
+    <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
+    <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
+  </div>
+  <div class="lightbox" id="lightbox-2" tabindex="0" aria-modal="true" role="dialog" aria-label="Lightbox 3">
+    <span class="close-btn" title="Close">&times;</span>
+    <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
+    <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
+  </div>
+  <div class="lightbox" id="lightbox-3" tabindex="0" aria-modal="true" role="dialog" aria-label="Lightbox 4">
+    <span class="close-btn" title="Close">&times;</span>
+    <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
+    <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
+  </div>
+  <div class="lightbox" id="lightbox-4" tabindex="0" aria-modal="true" role="dialog" aria-label="Lightbox 5">
+    <span class="close-btn" title="Close">&times;</span>
+    <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
+    <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
+  </div>
+  <div class="lightbox" id="lightbox-5" tabindex="0" aria-modal="true" role="dialog" aria-label="Lightbox 6">
+    <span class="close-btn" title="Close">&times;</span>
+    <span class="nav-arrow prev-arrow" title="Previous">&#10094;</span>
+    <span class="nav-arrow next-arrow" title="Next">&#10095;</span>
+  </div>
 </div>
 
 <script>
-  const totalLightboxes = 6;
+  const images = [
+    'https://storage.googleapis.com/acciojob-open-file-collections/image1.jpg',
+    'https://storage.googleapis.com/acciojob-open-file-collections/image2.jpg',
+    'https://storage.googleapis.com/acciojob-open-file-collections/image3.jpg',
+    'https://storage.googleapis.com/acciojob-open-file-collections/image4.jpg',
+    'https://storage.googleapis.com/acciojob-open-file-collections/image5.jpg',
+    'https://storage.googleapis.com/acciojob-open-file-collections/image6.jpg'
+  ];
+  const total = images.length;
 
-  function openLightbox(idx) {
+  function insertImage(lightbox, index) {
+    const oldImg = lightbox.querySelector('img');
+    if (oldImg) oldImg.remove();
+    const img = document.createElement('img');
+    img.src = images[index];
+    img.alt = `Image ${index+1}`;
+    const nextArrow = lightbox.querySelector('.next-arrow');
+    lightbox.insertBefore(img, nextArrow);
+  }
+
+  function openLightbox(index) {
     closeAll();
-    const lb = document.getElementById('lightbox-' + idx);
+    const lb = document.getElementById(`lightbox-${index}`);
     if (lb) {
+      insertImage(lb, index);
       lb.classList.add('active');
       lb.focus();
     }
   }
 
   function closeAll() {
-    document.querySelectorAll('.lightbox.active').forEach(lb => lb.classList.remove('active'));
+    document.querySelectorAll('.lightbox.active').forEach(lb => {
+      lb.classList.remove('active');
+      const img = lb.querySelector('img');
+      if(img) img.remove();
+    });
   }
 
   document.querySelectorAll('.gallery-img').forEach((img, idx) => {
@@ -181,7 +201,7 @@
   });
 
   document.querySelectorAll('.lightbox').forEach((lb, idx) => {
-    lb.querySelector('.close-btn').addEventListener('click', () => closeAll());
+    lb.querySelector('.close-btn').addEventListener('click', closeAll);
 
     lb.addEventListener('click', e => {
       if (e.target === lb) closeAll();
@@ -189,14 +209,14 @@
 
     lb.querySelector('.prev-arrow').addEventListener('click', e => {
       e.stopPropagation();
-      let prevIdx = (idx - 1 + totalLightboxes) % totalLightboxes;
-      openLightbox(prevIdx);
+      const prev = (idx - 1 + total) % total;
+      openLightbox(prev);
     });
 
     lb.querySelector('.next-arrow').addEventListener('click', e => {
       e.stopPropagation();
-      let nextIdx = (idx + 1) % totalLightboxes;
-      openLightbox(nextIdx);
+      const next = (idx + 1) % total;
+      openLightbox(next);
     });
   });
 
