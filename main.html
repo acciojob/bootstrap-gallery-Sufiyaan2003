@@ -1,16 +1,147 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
 <head>
-	<link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bootstrap Cards Gallery with Carousel Lightbox</title>
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<style>
+  .card {
+    border-radius: 0.75rem;
+  }
+  .card-title, .card-text {
+    text-align: center;
+  }
+  .gallery-img {
+    cursor: pointer;
+  }
+  /* Modal transparent background */
+  .modal-content {
+    background: transparent;
+    border: none;
+  }
+  .carousel-inner img {
+    border-radius: 0.75rem;
+    max-height: 70vh;
+    object-fit: contain;
+    width: 100%;
+  }
+</style>
 </head>
-
 <body>
-	<!-- the entire body must be written by student -->
-    <script type="text/javascript" src="./script.js">
+<div class="container my-4">
+  <h2 class="mb-4 text-center">Cards Gallery</h2>
+  <div class="row g-3">
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="card">
+        <img src="https://storage.googleapis.com/acciojob-open-file-collections/image1.jpg" alt="Image 1" class="img-fluid rounded-top gallery-img" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-index="0" />
+        <div class="card-body">
+          <h6 class="card-title">Description 1</h6>
+          <p class="card-text">Details about image 1.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="card">
+        <img src="https://storage.googleapis.com/acciojob-open-file-collections/image2.jpg" alt="Image 2" class="img-fluid rounded-top gallery-img" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-index="1" />
+        <div class="card-body">
+          <h6 class="card-title">Description 2</h6>
+          <p class="card-text">Details about image 2.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="card">
+        <img src="https://storage.googleapis.com/acciojob-open-file-collections/image3.jpg" alt="Image 3" class="img-fluid rounded-top gallery-img" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-index="2" />
+        <div class="card-body">
+          <h6 class="card-title">Description 3</h6>
+          <p class="card-text">Details about image 3.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="card">
+        <img src="https://storage.googleapis.com/acciojob-open-file-collections/image4.jpg" alt="Image 4" class="img-fluid rounded-top gallery-img" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-index="3" />
+        <div class="card-body">
+          <h6 class="card-title">Description 4</h6>
+          <p class="card-text">Details about image 4.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="card">
+        <img src="https://storage.googleapis.com/acciojob-open-file-collections/image5.jpg" alt="Image 5" class="img-fluid rounded-top gallery-img" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-index="4" />
+        <div class="card-body">
+          <h6 class="card-title">Description 5</h6>
+          <p class="card-text">Details about image 5.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="card">
+        <img src="https://storage.googleapis.com/acciojob-open-file-collections/image6.jpg" alt="Image 6" class="img-fluid rounded-top gallery-img" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-index="5" />
+        <div class="card-body">
+          <h6 class="card-title">Description 6</h6>
+          <p class="card-text">Details about image 6.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal containing Carousel -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true" aria-labelledby="imageModalLabel">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <div id="galleryCarousel" class="carousel slide" data-bs-interval="false">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="https://storage.googleapis.com/acciojob-open-file-collections/image1.jpg" alt="Image 1" />
+            </div>
+            <div class="carousel-item">
+              <img src="https://storage.googleapis.com/acciojob-open-file-collections/image2.jpg" alt="Image 2" />
+            </div>
+            <div class="carousel-item">
+              <img src="https://storage.googleapis.com/acciojob-open-file-collections/image3.jpg" alt="Image 3" />
+            </div>
+            <div class="carousel-item">
+              <img src="https://storage.googleapis.com/acciojob-open-file-collections/image4.jpg" alt="Image 4" />
+            </div>
+            <div class="carousel-item">
+              <img src="https://storage.googleapis.com/acciojob-open-file-collections/image5.jpg" alt="Image 5" />
+            </div>
+            <div class="carousel-item">
+              <img src="https://storage.googleapis.com/acciojob-open-file-collections/image6.jpg" alt="Image 6" />
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel" data-bs-slide="prev" aria-label="Previous">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next" aria-label="Next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // When a gallery image is clicked, open modal on that carousel index
+  document.querySelectorAll('.gallery-img').forEach((img, idx) => {
+    img.addEventListener('click', () => {
+      var carouselElement = document.querySelector('#galleryCarousel');
+      var carousel = bootstrap.Carousel.getInstance(carouselElement);
+      if (!carousel) {
+        carousel = new bootstrap.Carousel(carouselElement, { interval: false });
+      }
+      carousel.to(idx);
+    });
+  });
 </script>
-
 </body>
-
 </html>
